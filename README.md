@@ -1,1 +1,1 @@
-# laravel-nuxt
+# laravel, nuxt, vue
