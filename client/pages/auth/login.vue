@@ -3,15 +3,11 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-header">
-                        Register
+                    <div class="card-header bg-primary text-white">
+                        <strong>Login</strong>
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="onSubmit">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input v-model="form.name" type="text" id="name" class="form-control" placeholder="Name">
-                            </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input v-model="form.email" type="email" id="email" class="form-control" placeholder="Email">
@@ -20,13 +16,9 @@
                                 <label for="password">Password</label>
                                 <input v-model="form.password" type="password" id="password" class="form-control" placeholder="Password">
                             </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">Confirm Password</label>
-                                <input v-model="form.confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password">
-                            </div>
                             <div class="form-group mb-0 text-right">
-                                <button type="submit" class="btn btn-primary">Register</button>
-                                <nuxt-link class="btn btn-secondary" to="/auth/login">Login</nuxt-link>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                                <nuxt-link class="btn btn-secondary" to="/auth/register">Register</nuxt-link>
                             </div>
                         </form>
                     </div>
@@ -41,10 +33,8 @@
         layout: 'authLayout',
         data: () => ({
             form: {
-                name: '',
                 email: '',
-                password: '',
-                confirmPassword: ''
+                password: ''
             }
         }),
         methods: {
@@ -54,3 +44,4 @@
         }
     }
 </script>
+

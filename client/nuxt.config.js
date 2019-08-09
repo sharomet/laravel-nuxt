@@ -1,80 +1,67 @@
-module.exports = {
+export default {
+  mode: 'universal',
   /*
   ** Headers of the page
   */
   head: {
-    title: 'client',
+    title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   /*
-  ** Customize the progress bar color
+  ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#fff' },
+  /*
+  ** Global CSS
+  */
+  css: [
+    '@/assets/scss/app.scss'
+  ],
+  /*
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+  ],
+  /*
+  ** Nuxt.js dev-modules
+  */
+  devModules: [
+  ],
+  /*
+  ** Nuxt.js modules
+  */
+  modules: [
+    // Doc: https://bootstrap-vue.js.org/docs/
+    'bootstrap-vue/nuxt',
+    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/axios',
+  ],
+  bootstrapVue: {
+    bootstrapCSS: false, // Or `css: false`
+    //bootstrapVueCSS: false // Or `bvCSS: false`
+  },
+
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+  },
   /*
   ** Build configuration
   */
-
-  plugins: [],
-
-  auth: {
-    strategies: {
-      local: {
-        endpoint: {
-          login: {
-            url: 'auth/login', method: 'post', propertyName: 'token'
-          },
-          user: {
-            url: 'me', method: 'get', propertyName: 'data'
-          },
-          logout: {
-            urk: 'logout', method: 'get'
-          }
-        }
-      },
-    },
-    redirect: {
-      login: '/auth/login',
-      home: '/'
-    }
-  },
-
-  modules: [
-    'bootstrap-vue/nuxt',
-    '@nuxtjs/axios',
-    '@nuxtjs/auth'
-  ],
-
-  axios: {
-    baseURL: 'http://localhost:8000/api'
-  },
-
-  bootstrapVue: {
-    config: {
-      // Custom config options here
-    }
-  },
-
   build: {
     /*
-    ** Run ESLint on save
+    ** You can extend webpack config here
     */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
+    extend (config, ctx) {
     }
   }
 }
-
