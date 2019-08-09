@@ -1,3 +1,5 @@
 <template>
-    <div>Admin</div>
+    <div>
+        <nuxt />
+    </div>
 </template>
