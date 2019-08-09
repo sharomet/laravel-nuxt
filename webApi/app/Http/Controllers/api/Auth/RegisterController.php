@@ -1,25 +1,16 @@
 <?php
-
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\api\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Tymon\JWTAuth\JWTAuth;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
 
     use RegistersUsers;
 
@@ -28,16 +19,41 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '';
+    protected $auth;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(JWTAuth $auth)
     {
-        $this->middleware('guest');
+        $this->auth = $auth;
+        //$this->middleware('guest');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if(!$validator->fails())
+        {
+            $user = $this->create($request->all());
+            $token = $this->auth->attempt($request->only('email', 'password'));
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'token' => $token
+            ], 200);
+        }
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ]);
     }
 
     /**
@@ -51,7 +67,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
+//            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
